@@ -1,0 +1,84 @@
+<Page x:Class="FamilyBrowser.Revit.UI.BrowserPane"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="White">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+            <Button Content="Tambah File" Command="{Binding AddFilesCommand}" Padding="8,3" Margin="0,0,6,0"/>
+            <Button Content="Tambah Folder" Command="{Binding AddFolderCommand}" Padding="8,3" Margin="0,0,6,0"/>
+            <Button Content="Pindai Ulang" Command="{Binding RescanCommand}" Padding="8,3"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="0,0,0,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" ToolTip="Cari nama family atau type"/>
+            <TextBlock Grid.Column="1" Text="Kategori" VerticalAlignment="Center" Margin="8,0,4,0"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" DisplayMemberPath="Label"/>
+            <TextBlock Grid.Column="3" Text="Proyek" VerticalAlignment="Center" Margin="8,0,4,0"/>
+            <ComboBox Grid.Column="4" ItemsSource="{Binding Sources}" SelectedItem="{Binding SelectedSource}" DisplayMemberPath="Label"/>
+        </Grid>
+
+        <ListBox Grid.Row="2" ItemsSource="{Binding Tiles}" SelectionMode="Extended"
+                 VirtualizingPanel.IsVirtualizing="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="Margin" Value="2"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="140" ToolTip="{Binding FamilyName}">
+                        <Grid Width="128" Height="128" Background="#EEEEEE">
+                            <Image Source="{Binding Preview}" Stretch="Uniform"/>
+                            <TextBlock Text="{Binding CategoryName}" Foreground="#888" TextWrapping="Wrap"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Preview}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        <TextBlock Text="{Binding FamilyName}" FontWeight="SemiBold" TextWrapping="Wrap" MaxHeight="36" Margin="0,4,0,0"/>
+                        <TextBlock Text="{Binding CategoryName}" TextTrimming="CharacterEllipsis"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SourceName}" Foreground="Gray" TextTrimming="CharacterEllipsis" MaxWidth="90"/>
+                            <TextBlock Text=" - " Foreground="Gray"/>
+                            <TextBlock Text="{Binding TypeCountText}" Foreground="Gray"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <DockPanel Grid.Row="3" Margin="0,6,0,0" LastChildFill="True">
+            <Button DockPanel.Dock="Right" Content="Muat ke Proyek" Command="{Binding LoadSelectedCommand}" Padding="10,4" Margin="8,0,0,0"/>
+            <TextBlock Text="{Binding Status}" ToolTip="{Binding ErrorDetails}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+        </DockPanel>
+    </Grid>
+</Page>

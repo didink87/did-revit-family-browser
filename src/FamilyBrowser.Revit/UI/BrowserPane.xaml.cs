@@ -3,9 +3,14 @@ using Autodesk.Revit.UI;
 
 namespace FamilyBrowser.Revit.UI;
 
-/// <summary>Placeholder replaced by the XAML pane in Task 7.</summary>
-public sealed class BrowserPane : Page, IDockablePaneProvider
+public partial class BrowserPane : Page, IDockablePaneProvider
 {
+    public BrowserPane(BrowserViewModel viewModel)
+    {
+        InitializeComponent();
+        DataContext = viewModel;
+    }
+
     public void SetupDockablePane(DockablePaneProviderData data)
     {
         data.FrameworkElement = this;

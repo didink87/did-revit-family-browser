@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
+using FamilyBrowser.Core;
 using FamilyBrowser.Revit.UI;
 
 namespace FamilyBrowser.Revit;
@@ -27,7 +28,9 @@ public sealed class App : IExternalApplication
         };
         panel.AddItem(button);
 
-        application.RegisterDockablePane(PaneIds.Browser, "Family Browser", new BrowserPane());
+        var viewModel = new BrowserViewModel(FamilyIndexStore.Default(), SourceListStore.Default(), Queue.Enqueue);
+        Queue.Failed += viewModel.ReportFailure;
+        application.RegisterDockablePane(PaneIds.Browser, "Family Browser", new BrowserPane(viewModel));
         return Result.Succeeded;
     }
 
