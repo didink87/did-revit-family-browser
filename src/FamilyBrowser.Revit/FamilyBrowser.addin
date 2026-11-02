@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Family Browser</Name>
+    <Assembly>__ASSEMBLY__</Assembly>
+    <AddInId>B3F0C1D2-5A7E-4C19-8D42-6E9A1F7B3C58</AddInId>
+    <FullClassName>FamilyBrowser.Revit.App</FullClassName>
+    <VendorId>DIDF</VendorId>
+    <VendorDescription>Family Browser</VendorDescription>
+  </AddIn>
+</RevitAddIns>

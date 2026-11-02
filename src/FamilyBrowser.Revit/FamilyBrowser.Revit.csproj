@@ -21,4 +21,19 @@
     <InternalsVisibleTo Include="FamilyBrowser.Revit.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\*.png" />
+  </ItemGroup>
+
+  <!-- Opt-in: dotnet build -p:InstallAddin=true copies the manifest into the user's Revit 2026 Addins folder.
+       Off by default so test runs and the user's own Revit never load an unfinished add-in by accident. -->
+  <Target Name="InstallAddin" AfterTargets="Build" Condition="'$(InstallAddin)' == 'true'">
+    <PropertyGroup>
+      <AddinDir>$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\</AddinDir>
+      <AddinText>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\FamilyBrowser.addin').Replace('__ASSEMBLY__', '$(TargetPath)'))</AddinText>
+    </PropertyGroup>
+    <MakeDir Directories="$(AddinDir)" />
+    <WriteLinesToFile File="$(AddinDir)FamilyBrowser.addin" Lines="$(AddinText)" Overwrite="true" />
+  </Target>
+
 </Project>
