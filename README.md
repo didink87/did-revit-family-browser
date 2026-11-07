@@ -21,7 +21,7 @@ dotnet build src/FamilyBrowser.Revit -p:InstallAddin=true
 ```
 
 This copies `FamilyBrowser.addin` to `%AppData%\Autodesk\Revit\Addins\2026\`. Restart Revit, choose **Always Load**,
-then open the **Family Browser** tab -> **Library** -> **Browser**.
+then open the **DID** tab -> **DID** panel -> **Browser**. (The DID panel is shared with Sheet Studio and Face View.)
 
 ## Build and test
 
