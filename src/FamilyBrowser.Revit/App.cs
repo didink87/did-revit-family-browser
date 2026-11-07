@@ -8,7 +8,9 @@ namespace FamilyBrowser.Revit;
 
 public sealed class App : IExternalApplication
 {
-    private const string TabName = "Family Browser";
+    // Shared with Sheet Studio and Face View: one "DID" tab, one "DID" panel.
+    private const string TabName = "DID";
+    private const string PanelName = "DID";
 
     /// <summary>Created in OnStartup; every Revit API call from the pane goes through it.</summary>
     public static RevitTaskQueue Queue { get; private set; } = null!;
@@ -17,8 +19,9 @@ public sealed class App : IExternalApplication
     {
         Queue = new RevitTaskQueue();
 
-        application.CreateRibbonTab(TabName);
-        var panel = application.CreateRibbonPanel(TabName, "Library");
+        try { application.CreateRibbonTab(TabName); } catch (Autodesk.Revit.Exceptions.ArgumentException) { /* tab already created by another DID add-in */ }
+        var panel = application.GetRibbonPanels(TabName).FirstOrDefault(p => p.Name == PanelName)
+                    ?? application.CreateRibbonPanel(TabName, PanelName);
         var asm = Assembly.GetExecutingAssembly();
         var button = new PushButtonData("Browser", "Browser", asm.Location, typeof(ShowBrowserCommand).FullName)
         {

@@ -19,6 +19,6 @@ public class AppStartupTests
                 new FamilyBrowser.Revit.UI.BrowserViewModel(
                     FamilyBrowser.Core.FamilyIndexStore.Default(), FamilyBrowser.Core.SourceListStore.Default(), _ => { }))),
             Throws.InstanceOf<Autodesk.Revit.Exceptions.ArgumentException>());
-        Assert.That(app.GetRibbonPanels("Family Browser").Select(p => p.Name), Does.Contain("Library"));
+        Assert.That(app.GetRibbonPanels("DID").Select(p => p.Name), Does.Contain("DID"));
     }
 }
